@@ -157,53 +157,5 @@ Carro.placa_carro AS 'Placa',
 Medida.valor as 'Valor',
 tipo as 'Componente',
 unid_medida as 'UnidadeMedida' 
-FROM Empresa, Carro, Dispositivo, Medida
 WHERE fk_empresa = id_empresa AND fk_carro = id_carro AND fk_dispositivo = id_dispositivo order by id_medida desc;
 
-select * from vwDashTec;
-select * from Dispositivo;
-select * from Medida;
-
-select * from carro;
-/*Selecionando as tabelas dinâmicas referentes a empresa TESLA*/
-select * from vwDashGesCPU where CodEmpresa = 2;
-select * from vwDashGesRAM where CodEmpresa = 2;
-
-/*Selecionando as tabelas dinâmicas referentes a empresa HYUNDAI*/
-select * from vwDashGesCPU where CodEmpresa = 2;
-select * from vwDashGesRAM where CodEmpresa = 2;
-
-select * from medida where fk_dispositivo = 1 order by id_medida desc;
-
-select * from medida where fk_dispositivo = 2 order by id_medida desc;
-
-
-SELECT * from vwDashTec WHERE CodEmpresa = 2;
-Select * from processo;
-select * from Carro where endereco_mac = 'C2-F2-9F-2A-F9-7C';
-
-Select * from funcionario;
-select * from carro where fk_empresa =2;
-select * from Dispositivo where fk_carro = 1;
-select * from Medida where fk_dispositivo = 3;
-select * from Dispositivo;
-
-Select * from Carro, Dispositivo, Medida where fk_carro = id_carro AND fk_dispositivo = id_dispositivo and id_carro = 1;
-
-Select * from Processo;
-
-SELECT id_carro, endereco_mac, placa_carro, Carro.modelo
-tipo, Dispositivo.modelo, unid_medida, horario_registro, valor
-FROM Carro, Dispositivo, Medida 
-WHERE fk_carro = id_carro AND fk_dispositivo = id_dispositivo AND id_carro = 1 order by horario_registro desc limit 10;
-
- SELECT id_carro, endereco_mac, placa_carro, Carro.modelo
-    tipo, unid_medida, horario_registro, Medida.valor AS 'valor'
-    FROM Carro, Dispositivo, Medida 
-    WHERE fk_carro = id_carro AND fk_dispositivo = id_dispositivo AND id_carro = 1
-    LIMIT 10;
-
-select *from processo;
-select *from MedidaProcesso;
-
-select * from dispositivo;
