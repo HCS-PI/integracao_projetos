@@ -10,7 +10,7 @@ import pandas as pd
 import datetime as dt
 from conexaoBanco import criar_conexao
 from wordcloud import WordCloud
-
+from conexaoBanco import criar_conexao_local
 
 
 
@@ -20,7 +20,7 @@ from json import loads
 
 
 
-conexao = criar_conexao("localhost","root","Vini_0507", "hardware_control_system")
+conexao = criar_conexao_local()
 
 arrayConsumoRAM = [0] * 10 
 arrayConsumoCPU = [0] * 10
@@ -61,7 +61,9 @@ def dadosCPU():
             tempCPU = conversor(temp_value)
 
             insert_cpu(str(consumoCPU), str(tempCPU))
-    
+    else:
+        insert_cpu(str(consumoCPU), str(teste))
+        
     inserirTempCPUAws(str(teste))
     inserirConsumoCPUAws(str(consumoCPU))
 

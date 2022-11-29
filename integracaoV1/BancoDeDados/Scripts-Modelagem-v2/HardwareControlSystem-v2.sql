@@ -156,7 +156,7 @@ Carro.modelo AS 'Modelo',
 Carro.placa_carro AS 'Placa',
 Medida.valor as 'Valor',
 tipo as 'Componente',
-unid_medida as 'UnidadeMedida' 
+unid_medida as 'UnidadeMedida' FROM Empresa,Carro, Dispositivo, Medida 
 WHERE fk_empresa = id_empresa AND fk_carro = id_carro AND fk_dispositivo = id_dispositivo order by id_medida desc;
 
 create view `vwServerAWSInfoCPU` as
@@ -169,7 +169,7 @@ FROM Dispositivo, Medida
 WHERE fk_servidor_aws = 1 AND id_dispositivo > 0 AND id_dispositivo < 3 AND id_dispositivo = fk_dispositivo AND tipo = "CPU"
 order by id_medida desc limit 10;
 
-drop view vwDashAwsTempCPU;
+
 
 insert into Medida values (null, now(), 35.58, 2);
 insert into Medida values (null, now(), 50.58, 2);
@@ -255,3 +255,4 @@ select * from vwPegarDisco where fk_carro = 4 order by id_medida desc limit 10;
 
 SELECT valor FROM Medida, Dispositivo where tipo = "RAM" AND fk_dispositivo = id_dispositivo  AND fk_servidor_aws = 1 order by id_medida desc limit 20;
 SELECT valor  FROM Medida, Dispositivo where tipo = "CPU" AND unid_medida = "%"  AND fk_dispositivo = id_dispositivo AND fk_servidor_aws = 1 order by id_medida desc limit 20;
+select * from vwPegarCpu;

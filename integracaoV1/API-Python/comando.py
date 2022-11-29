@@ -33,12 +33,14 @@ def insert_cpu(consumo, temperatura):
 
     dispConsumo = select("select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" +
                          str(idCarro[0]) + " and tipo = 'CPU' and unid_medida = '%';")
-    print(dispConsumo)
+
     dispTemp = select("select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" +
                       str(idCarro[0]) + " and tipo = 'CPU' and unid_medida = '°C';")
 
     dConsumo = str(dispConsumo[0])
     dTemp = str(dispTemp[0])
+
+    
 
     sql = f"INSERT INTO Medida (horario_registro, fk_dispositivo, valor) VALUES (now(), {dConsumo}, {consumo})"
     cursor.execute(sql)
