@@ -5,11 +5,12 @@ import time
 import psutil
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from comando import  insert_cpu, insert_disco, insert_proc, insert_ram
+from comando import  insert_cpu, insert_disco, insert_proc, insert_ram, inserirConsumoCPUAws, inserirTempCPUAws, inserirConsumoRAMAws, inserirConsumoDISCOAws
 import pandas as pd
 import datetime as dt
 from conexaoBanco import criar_conexao
 from wordcloud import WordCloud
+
 
 
 
@@ -40,6 +41,7 @@ def conversor(valor):
 def dadosCPU():
     consumoCPU = psutil.cpu_percent(interval=None)
     crawler = False
+    teste = consumoCPU + 56.7
 
     if platform.system() == 'Linux':
         temps = psutil.sensors_temperatures()
@@ -59,13 +61,16 @@ def dadosCPU():
             tempCPU = conversor(temp_value)
 
             insert_cpu(str(consumoCPU), str(tempCPU))
-  
+    
+    inserirTempCPUAws(str(teste))
+    inserirConsumoCPUAws(str(consumoCPU))
 
 
 def dadosDisco():
     armzTotalDisco = round((psutil.disk_usage('/')[0]) / (10**9), 2)
     consumoDisco = round((psutil.disk_usage('/')[3]), 2)
     insert_disco(str(consumoDisco), str(armzTotalDisco))
+    inserirConsumoDISCOAws(str(consumoDisco))
 
     
 
@@ -92,23 +97,35 @@ def transformarEmCsv() :
 
     dic = {"Nome":nomeProcesso}
     df = pd.DataFrame(dic)
-    df.to_csv("C:DadosColetados"+str( dt.date.today() )+".csv")
+    df.to_csv("DadosColetados"+str( dt.date.today() )+".csv")
 
     
 
 def ApertarBotao3():
     cursor = conexao.cursor()
-    sql = "SELECT consumoRAM_PercentTeste , consumoCPU_PercentTeste FROM teste1;"
+    sql = 'SELECT valor FROM Medida, Dispositivo where tipo = "RAM" AND fk_dispositivo = id_dispositivo  AND fk_servidor_aws = 1 order by id_medida desc limit 100;'
     cursor.execute(sql)
 
-    resultado = cursor.fetchall()
+    resultadoRam = cursor.fetchall()
+    cursor.close()
+
+    cursor = conexao.cursor()
+    sql = 'SELECT valor FROM Medida, Dispositivo where tipo = "CPU" AND unid_medida = "%"  AND fk_dispositivo = id_dispositivo AND fk_servidor_aws = 1 order by id_medida desc limit 100;'
+    cursor.execute(sql)
+
+    resultadoCpu = cursor.fetchall()
+    cursor.close()
+
     todaRam = []
     todaCpu = []
    
     
-    for consumoRAM_PercentTeste, consumoCPU_PercentTeste in resultado:
-        todaRam.append(consumoRAM_PercentTeste)
-        todaCpu.append(consumoCPU_PercentTeste)
+    for valorRam in resultadoRam:
+        todaRam.append(valorRam)
+
+    for valorCpu in resultadoCpu:
+        todaCpu.append(valorCpu)
+        
 
     janela3 = tkinter.Tk()
     janela3.title("Dados Coletados")
@@ -144,7 +161,7 @@ def ApertarBotao2():
    
     transformarEmCsv()
 
-    leitura = pd.read_csv("C:DadosColetados"+str( dt.date.today() )+".csv")
+    leitura = pd.read_csv("DadosColetados"+str( dt.date.today() )+".csv")
     leitura = leitura.drop("Unnamed: 0", axis=1)
 
         
@@ -212,6 +229,7 @@ def ApertarBotao():
                     arrayConsumoCPU.remove(arrayConsumoCPU[0]) 
 
                     insert_ram(str(arrayConsumoRAM[-1]))
+                    inserirConsumoRAMAws(str(psutil.virtual_memory()[2]))
                     
             
                     figura = plt.figure(figsize=(3,2), dpi=100)

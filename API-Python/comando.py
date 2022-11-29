@@ -22,7 +22,7 @@ def select(query):
 
 
 enderecoMac = getmac.get_mac_address()
-enderecoMac = '87-93-87-EF-B1-0B'
+enderecoMac = 'C2-F2-9F-2A-F9-7C'
 idCarro = select("select id_carro from Carro where endereco_mac = '" +
                  enderecoMac + "' ;")
 
@@ -33,6 +33,7 @@ def insert_cpu(consumo, temperatura):
 
     dispConsumo = select("select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" +
                          str(idCarro[0]) + " and tipo = 'CPU' and unid_medida = '%';")
+    print(dispConsumo)
     dispTemp = select("select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" +
                       str(idCarro[0]) + " and tipo = 'CPU' and unid_medida = '°C';")
 
@@ -50,7 +51,7 @@ def insert_ram(consumo):
 
     idDispositivo = select(
         "select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" + str(idCarro[0]) + " and tipo = 'RAM';")
-
+    print(idDispositivo)
     con = criar_conexao_local()
     cursor = con.cursor()
     sql = f"INSERT INTO Medida (horario_registro, fk_dispositivo, valor) VALUES (now(), {idDispositivo[0]}, {consumo})"
@@ -104,8 +105,33 @@ def insert_proc(dados):
         cursor.execute(sql)
         cursor.close()
 
- 
+def inserirConsumoCPUAws(consumoCPU):
+    conexao = criar_conexao_local()
+    cursor = conexao.cursor()
+    query = 'insert into Medida values (null, now(),'+ consumoCPU + ', 1);'
+    cursor.execute(query)
+    cursor.close()
 
+def inserirTempCPUAws(tempCPU):
+    conexao = criar_conexao_local()
+    cursor = conexao.cursor()
+    query = 'insert into Medida values (null, now(),'+ tempCPU + ', 2);'
+    cursor.execute(query)
+    cursor.close()
+
+def inserirConsumoRAMAws(consumoRAM):
+    conexao = criar_conexao_local()
+    cursor = conexao.cursor()
+    query = 'insert into Medida values (null, now(),'+ consumoRAM + ', 3);'
+    cursor.execute(query)
+    cursor.close()
+
+def inserirConsumoDISCOAws(consumoDISCO):
+    conexao = criar_conexao_local()
+    cursor = conexao.cursor()
+    query = 'insert into Medida values (null, now(),'+ consumoDISCO + ', 4);'
+    cursor.execute(query)
+    cursor.close()
 
     
 

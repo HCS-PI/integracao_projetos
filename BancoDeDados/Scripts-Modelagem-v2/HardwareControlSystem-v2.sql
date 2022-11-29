@@ -159,3 +159,99 @@ tipo as 'Componente',
 unid_medida as 'UnidadeMedida' 
 WHERE fk_empresa = id_empresa AND fk_carro = id_carro AND fk_dispositivo = id_dispositivo order by id_medida desc;
 
+create view `vwServerAWSInfoCPU` as
+SELECT id_medida,
+horario_registro,
+unid_medida,
+valor as Valores,
+fk_dispositivo as Dispositivo
+FROM Dispositivo, Medida
+WHERE fk_servidor_aws = 1 AND id_dispositivo > 0 AND id_dispositivo < 3 AND id_dispositivo = fk_dispositivo AND tipo = "CPU"
+order by id_medida desc limit 10;
+
+drop view vwDashAwsTempCPU;
+
+insert into Medida values (null, now(), 35.58, 2);
+insert into Medida values (null, now(), 50.58, 2);
+insert into Medida values (null, now(), 22.58, 2);
+insert into Medida values (null, now(), 75.58, 2);
+insert into Medida values (null, now(), 60.58, 2);
+
+CREATE VIEW `vwDashAwsConsumoRAM` AS
+SELECT id_medida,
+horario_registro,
+unid_medida as 'Unidade de Medida',
+valor as ConsumoRam
+FROM Dispositivo, Medida
+WHERE unid_medida = "%" AND fk_servidor_aws = 1 AND id_dispositivo = 3 AND id_dispositivo = fk_dispositivo
+order by id_medida desc limit 5;
+
+CREATE VIEW `vwDashAwsConsumoDISCO` AS
+SELECT id_medida,
+horario_registro,
+unid_medida as 'Unidade de Medida',
+valor as ConsumoDisco
+FROM Dispositivo, Medida
+WHERE unid_medida = "%" AND fk_servidor_aws = 1 AND id_dispositivo = 4 AND id_dispositivo = fk_dispositivo
+order by id_medida desc limit 1;
+
+
+
+
+select * from vwDashAwsConsumoRAM;
+select * from Medida;
+
+select * from ServidorAws;
+
+select * from carro;
+
+select * from vwDashAwsConsumoDISCO;
+
+
+ 
+
+CREATE VIEW `vwDispositivos` As 
+ Select   tipo, unid_medida, fk_carro,
+    id_medida, Medida.horario_registro, Medida.valor AS 'valor'
+    from Dispositivo, Carro, Medida 
+    where Dispositivo.fk_carro = id_carro and fk_dispositivo = id_dispositivo;
+    
+select * from vwDispositivos where fk_carro = 4  order by id_medida desc limit 10; 
+
+CREATE VIEW `vwProcessos` As 
+select   nome, cpu_perc, horario_registro, fk_carro
+    from Processo, MedidaProcesso
+    where Processo.id = fk_processo and  nome <> 'System Idle Process';
+    
+select * from vwProcessos where fk_carro = 4  order by cpu_perc desc;
+
+CREATE VIEW `vwPegarRam` As 
+ Select   tipo, unid_medida, fk_carro,
+    id_medida, Medida.horario_registro, Medida.valor AS 'valor'
+    from Dispositivo, Carro, Medida 
+    where Dispositivo.fk_carro = id_carro and fk_dispositivo = id_dispositivo 
+    and Dispositivo.tipo = "RAM";
+    
+select * from vwPegarRam where fk_carro = 4  order by id_medida desc limit 5;
+
+CREATE VIEW `vwPegarCpu` As 
+Select   tipo, unid_medida, fk_carro,
+    id_medida, Medida.horario_registro, Medida.valor AS 'valor'
+    from Dispositivo, Carro, Medida 
+    where Dispositivo.fk_carro = id_carro and fk_dispositivo = id_dispositivo 
+	and Dispositivo.tipo = "CPU";
+   
+    
+select * from vwPegarCpu where fk_carro = 4  order by id_medida desc limit 10;
+
+CREATE VIEW `vwPegarDisco` As 
+select tipo, unid_medida, fk_carro,
+    id_medida, Medida.horario_registro, Medida.valor AS 'valor'
+    from Dispositivo, Carro, Medida 
+    where Dispositivo.fk_carro = id_carro and fk_dispositivo = id_dispositivo 
+    and tipo = "DISCO";
+   
+select * from vwPegarDisco where fk_carro = 4 order by id_medida desc limit 10;
+
+SELECT valor FROM Medida, Dispositivo where tipo = "RAM" AND fk_dispositivo = id_dispositivo  AND fk_servidor_aws = 1 order by id_medida desc limit 20;
+SELECT valor  FROM Medida, Dispositivo where tipo = "CPU" AND unid_medida = "%"  AND fk_dispositivo = id_dispositivo AND fk_servidor_aws = 1 order by id_medida desc limit 20;
