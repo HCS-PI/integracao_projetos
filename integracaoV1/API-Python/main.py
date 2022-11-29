@@ -286,28 +286,28 @@ janela.geometry("500x500"+"+%d+%d" % (posx, posy))
 
 janela.configure(background="black")
 
-imagemHcs = tkinter.PhotoImage(file="hcs2e.png")
-imagelLabelHcs = tkinter.Label(janela, image=imagemHcs)
+# imagemHcs = tkinter.PhotoImage(file="hcs2e.png")
+imagelLabelHcs = tkinter.Label(janela, text="imagemHcs")
 imagelLabelHcs.place(x=100, y=100)
 imagelLabelHcs.configure(background="white")
 
 
 
-imagemBotao = tkinter.PhotoImage(file="button_dashboard.png")
-botao = tkinter.Button(janela, image= imagemBotao, command=ApertarBotao)
+# imagemBotao = tkinter.PhotoImage(file="button_dashboard.png")
+botao = tkinter.Button(janela, text= "imagemBotao", command=ApertarBotao)
 botao.place(x=270,y=250)
-botao.config(bg="black" , bd=0)
+botao.config(bg="white" , bd=0)
 
 
-imageBotao2 = tkinter.PhotoImage(file="button_wordcloud.png")
-botao2 = tkinter.Button(janela, image= imageBotao2, command=ApertarBotao2)
+# imageBotao2 = tkinter.PhotoImage(file="button_wordcloud.png")
+botao2 = tkinter.Button(janela, text= "imageBotao2", command=ApertarBotao2)
 botao2.place(x=80,y=250)
-botao2.config(bg="black", bd=0)
+botao2.config(bg="white", bd=0)
 
-imagemBotao3 = tkinter.PhotoImage(file="button_graficos.png")
-botao3 = tkinter.Button(janela, image= imagemBotao3, command=ApertarBotao3)
+#imagemBotao3 = tkinter.PhotoImage(file="button_graficos.png")
+botao3 = tkinter.Button(janela, text= "imagemBotao3", command=ApertarBotao3)
 botao3.place(x=190,y=350)
-botao3.config(bg="black", bd= 0)
+botao3.config(bg="white", bd= 0)
 
 
 janela.mainloop()
