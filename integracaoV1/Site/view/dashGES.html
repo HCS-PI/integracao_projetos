@@ -22,19 +22,49 @@
 
         <a href="index.html">
             <h3>Voltar</h3>
-        </a>    
-            <div class="header1">
-                <img src="assets/img/hcs2.png">
-            </div>
-        
-        
+        </a>
+        <div class="header1">
+            <img src="assets/img/hcs2.png">
+        </div>
+
+
     </div>
     <div class="titulo">
         <h2>Visão geral - CPU, RAM e Disco</h2>
     </div>
+    <div class="boxInfoCPUCarros">
+        <div class="informacoesCPUCarros">
+            <div class="div_graficoCPU" id="div_graficoCPU">
+                <canvas id="graf_mediaCPU"></canvas>
+            </div>
+            <div class="div_ModelosCarros">
+                <div>
+                    <h2>Média de Consumo de CPU por Modelo</h2>
+                </div>
+                <div id="div_modelos_carros_CPU" class="modelos_carros_input_modelos">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="boxInfoRAMCarros">
+        <div class="informacoesRAMCarros">
+            <div class="div_graficoRAM" id="div_graficoRAM">
+                <canvas id="graf_mediaRAM"></canvas>
+            </div>
+            <div class="div_ModelosCarros">
+                <div>
+                    <h2>Média de Consumo de RAM por Modelo</h2>
+                </div>
+                <div  id = "div_modelos_carros_RAM" class="modelos_carros_input_modelos">
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="graficos">
         <div class="grafico1">
-            <div class="graficoBarraCPU" id="graficoBarraCPU"><canvas id="grafico1"></canvas></div>
+            <div class="graficoBarraCPU" id="graficoBarraCPU">
+                <canvas id="grafico1"></canvas>
+            </div>
         </div>
 
         <div class="grafico2">
@@ -44,9 +74,9 @@
         <!--<div class="grafico3">
             <div class="graficoPizzaDisco"><canvas id="grafico3"></canvas></div>
         </div> -->
-        
+
     </div>
-  
+
 </body>
 
 </html>
