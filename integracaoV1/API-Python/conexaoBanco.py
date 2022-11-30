@@ -11,7 +11,7 @@ def fechar_conexao(conexao):
 
 
 def criar_conexao_local():
-    return mysql.connector.connect(host="localhost", user="root", password="matheus", database="hardware_control_system", autocommit=True)
+    return mysql.connector.connect(host="localhost", user="root", password="", database="hardware_control_system", autocommit=True)
 
 
 def criar_conexao_cloud():

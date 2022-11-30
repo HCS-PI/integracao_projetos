@@ -37,7 +37,7 @@ def conversor(valor):
 
 def dadosCPU():
     consumoCPU = psutil.cpu_percent(interval=None)
-    crawler = True
+    crawler = False
     teste = consumoCPU + 56.7
 
     if platform.system() == 'Linux':
@@ -119,6 +119,7 @@ def ApertarBotao3():
 
     janela3 = tkinter.Tk()
     janela3.title("Dados Coletados")
+    janela3.resizable(False, False)
 
     janela3.configure(background='black')
     larguraScreen = janela3.winfo_screenwidth()
@@ -128,7 +129,7 @@ def ApertarBotao3():
     janela3.geometry("600x500+%d+%d" % (posx, posy))
 
     botaoVoltar = tkinter.Button(
-        janela3, text="Voltar", command=janela3.destroy)
+    janela3, text="Voltar", command=janela3.destroy)
     botaoVoltar.place(x=10, y=7)
     botaoVoltar.configure(background='white',
                           foreground='black', font=('arial', 15, 'bold'))
@@ -167,6 +168,7 @@ def ApertarBotao2():
 def ApertarBotao():
     janela2 = tkinter.Tk()
     janela2.title("Dashboard")
+    janela2.resizable(False, False)
     larguraScreen = janela2.winfo_screenwidth()
     alturaScreen = janela2.winfo_screenheight()
     posx = larguraScreen/2 - 250
@@ -247,12 +249,15 @@ def ApertarBotao():
             janela2.configure(background="black")
 
             janela2.update()
+        
+
 
 
 janela = tkinter.Tk()
 janela.title("Teste")
 janela.configure(background="black")
 
+janela.resizable(False, False)
 
 larguraScreen = janela.winfo_screenwidth()
 alturaScreen = janela.winfo_screenheight()
@@ -266,24 +271,28 @@ janela.geometry("500x500"+"+%d+%d" % (posx, posy))
 janela.configure(background="black")
 
 # imagemHcs = tkinter.PhotoImage(file="hcs2e.png")
-imagelLabelHcs = tkinter.Label(janela, text="imagemHcs")
+imagelLabelHcs = tkinter.Label(janela, text="Hadware Control System")
+imagelLabelHcs.config(font=("Arial", 20))
 imagelLabelHcs.place(x=100, y=100)
 imagelLabelHcs.configure(background="white")
 
 
 # imagemBotao = tkinter.PhotoImage(file="button_dashboard.png")
-botao = tkinter.Button(janela, text="imagemBotao", command=ApertarBotao)
+botao = tkinter.Button(janela, text="Dashboard", command=ApertarBotao)
+botao.config(font=("Arial", 20))
 botao.place(x=270, y=250)
 botao.config(bg="white", bd=0)
 
 
 # imageBotao2 = tkinter.PhotoImage(file="button_wordcloud.png")
-botao2 = tkinter.Button(janela, text="imageBotao2", command=ApertarBotao2)
+botao2 = tkinter.Button(janela, text="Wordcloud", command=ApertarBotao2)
+botao2.config(font=("Arial", 20))
 botao2.place(x=80, y=250)
 botao2.config(bg="white", bd=0)
 
 #imagemBotao3 = tkinter.PhotoImage(file="button_graficos.png")
-botao3 = tkinter.Button(janela, text="imagemBotao3", command=ApertarBotao3)
+botao3 = tkinter.Button(janela, text="Gráficos", command=ApertarBotao3)
+botao3.config(font=("Arial", 20))
 botao3.place(x=190, y=350)
 botao3.config(bg="white", bd=0)
 
