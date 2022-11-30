@@ -30,10 +30,10 @@ def insert_cpu(consumo, temperatura):
     con = criar_conexao_local()
     cursor = con.cursor()
 
-    dispConsumo = select("select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" +
+    dispConsumo = select("select id_dispositivo from Dispositivo, Carro where fk_carro = id_carro and id_carro =" +
                          str(idCarro[0]) + " and tipo = 'CPU' and unid_medida = '%';")
 
-    dispTemp = select("select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" +
+    dispTemp = select("select id_dispositivo from Dispositivo, Carro where fk_carro = id_carro and id_carro =" +
                       str(idCarro[0]) + " and tipo = 'CPU' and unid_medida = '°C';")
 
     dConsumo = str(dispConsumo[0])
@@ -49,7 +49,7 @@ def insert_cpu(consumo, temperatura):
 def insert_ram(consumo):
 
     idDispositivo = select(
-        "select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" + str(idCarro[0]) + " and tipo = 'RAM';")
+        "select id_dispositivo from Dispositivo, Carro where fk_carro = id_carro and id_carro =" + str(idCarro[0]) + " and tipo = 'RAM';")
  
     con = criar_conexao_local()
     cursor = con.cursor()
@@ -59,9 +59,9 @@ def insert_ram(consumo):
 
 
 def insert_disco(consumo, total):
-    idDisco1 = select("select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" +
+    idDisco1 = select("select id_dispositivo from Dispositivo, Carro where fk_carro = id_carro and id_carro =" +
                       str(idCarro[0]) + " and tipo = 'DISCO' and unid_medida = '%';")
-    idDisco2 = select("select id_dispositivo from dispositivo, Carro where fk_carro = id_carro and id_carro =" +
+    idDisco2 = select("select id_dispositivo from Dispositivo, Carro where fk_carro = id_carro and id_carro =" +
                       str(idCarro[0]) + " and tipo = 'DISCO' and unid_medida = 'T';")
 
     con = criar_conexao_local()
