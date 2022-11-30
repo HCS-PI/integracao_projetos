@@ -8,8 +8,8 @@ setInterval(() => {
 
 function verCarro() {
   var idCarro = sessionStorage.ID_Carro;
-  
-  console.log(idCarro)
+
+  console.log(idCarro);
   fetch("/dashTecnico/verDetalhes", {
     method: "POST",
     headers: {
@@ -77,7 +77,6 @@ function gerarDados() {
               } else {
                 temp.style = "background: #FF3559;";
               }
-
             } else if (tip == "%") {
               valCPU.innerHTML = `${valor}%`;
               vtCPU.push(valor);
@@ -140,17 +139,19 @@ function graficoDispRam() {
           labels: labels,
           datasets: [
             {
-              yAxisID: "y-usoRam",
               label: "Ram(%)",
               lineTension: 0.3,
-              backgroundColor: "#4E72F5",
-              borderColor: "#4E72F5",
+              backgroundColor: "#1345EB37",
+              borderColor: "#002AFF",
+              pointRadius: 6,
+              pointHoverRadius: 10,
+              stepped: true,
               data: [
-                valoresRam[4],
-                valoresRam[3],
-                valoresRam[2],
-                valoresRam[1],
                 valoresRam[0],
+                valoresRam[1],
+                valoresRam[2],
+                valoresRam[3],
+                valoresRam[4],
               ],
               fill: true,
             },
@@ -178,6 +179,25 @@ function graficoDispRam() {
             maintainAspectRatio: false,
             responsive: true,
             animation: 1,
+            scales: {
+              y: {
+                suggestedMin: 0,
+                suggestedMax: 100,
+                grid: {
+                  color: function (context) {
+                    if (context.tick.value >= 80) {
+                      return "#F40707";
+                    } else if (context.tick.value >= 50) {
+                      return "#E8F407";
+                    } else if (context.tick.value < 50) {
+                      return "#46F407";
+                    }
+
+                    return "#000000";
+                  },
+                },
+              },
+            },
           },
         };
 
@@ -243,34 +263,37 @@ function graficoDispCpu() {
           labels: labels,
           datasets: [
             {
-              yAxisID: "y-usoCpu",
+              type: "line",
               label: "Uso Cpu(%)",
               lineTension: 0.3,
-              backgroundColor: "rgba(0, 0, 0, 0)",
+              backgroundColor: "rgba(92, 925, 183, 1.5)",
               borderColor: "rgba(92, 925, 183, 1.5)",
+              pointStyle: "rectRounded",
+              pointRadius: 8,
+              pointHoverRadius: 10,
               data: [
-                valoresUsoCPU[4],
-                valoresUsoCPU[3],
-                valoresUsoCPU[2],
-                valoresUsoCPU[1],
                 valoresUsoCPU[0],
+                valoresUsoCPU[1],
+                valoresUsoCPU[2],
+                valoresUsoCPU[3],
+                valoresUsoCPU[4],
               ],
-              fill: true,
             },
             {
-              yAxisID: "y-Temperatura-cpu",
+              type: "bar",
               label: "Temperatura(°C)",
-              lineTension: 0.3,
-              backgroundColor: "rgba(0, 0, 0, 0)",
+              backgroundColor: "rgba(250, 5, 35, 0.94)",
               borderColor: "rgba(250, 5, 35, 0.94)",
+              borderWidth: 1,
+              borderRadius: 10,
+              borderSkipped: false,
               data: [
-                tempCPU[4],
-                tempCPU[3],
-                tempCPU[2],
-                tempCPU[1],
                 tempCPU[0],
+                tempCPU[1],
+                tempCPU[2],
+                tempCPU[3],
+                tempCPU[4],
               ],
-              fill: true,
             },
           ],
           options: {
@@ -280,12 +303,18 @@ function graficoDispCpu() {
         };
 
         const config = {
-          type: "line",
           data: dados,
           options: {
             maintainAspectRatio: false,
             responsive: false,
             animation: 1,
+            scales: {
+              y: {
+                suggestedMin: 0,
+                suggestedMax: 100,
+                stacked: true,
+              },
+            },
           },
         };
 
@@ -294,7 +323,7 @@ function graficoDispCpu() {
     }
   });
 }
-
+ 
 function verProcesso() {
   var idCarro = sessionStorage.ID_Carro;
   var vtData = [];
@@ -315,7 +344,6 @@ function verProcesso() {
   }).then(function (resposta) {
     if (resposta.ok) {
       resposta.json().then((json) => {
-        json = json.reverse();
         var i = 0;
 
         document.getElementById("grafico3").remove();
@@ -355,7 +383,6 @@ function verProcesso() {
             }
           }
         }
-        
 
         const data = {
           labels: [
@@ -388,7 +415,7 @@ function verProcesso() {
         };
 
         const config = {
-          type: "pie",
+          type: "doughnut",
           data: data,
           options: {
             responsive: false,
@@ -400,6 +427,9 @@ function verProcesso() {
               title: {
                 display: true,
                 text: "Processos",
+                font: {
+                  size: 20,
+                },
               },
             },
           },
@@ -410,6 +440,7 @@ function verProcesso() {
     }
   });
 }
+
 
 function verDisco() {
   var idCarro = sessionStorage.ID_Carro;
@@ -440,14 +471,14 @@ function verDisco() {
           valorUso = json[index].valor;
           medida = json[index].unid_medida;
 
-          if(medida == '%'){
+          if (medida == "%") {
             vtDadosDisco.push(valorUso);
-          }else {
+          } else {
             vtTotalDisco.push(valorUso);
           }
         }
-        
-        tamanho = vtTotalDisco.length
+
+        tamanho = vtTotalDisco.length;
         const data = {
           labels: ["Uso", "Total"],
           datasets: [
@@ -473,6 +504,9 @@ function verDisco() {
               title: {
                 display: true,
                 text: "Disco",
+                font: {
+                  size: 2,
+                },
               },
             },
           },
