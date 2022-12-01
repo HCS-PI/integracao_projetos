@@ -129,7 +129,7 @@ def ApertarBotao3():
     janela3.geometry("600x500+%d+%d" % (posx, posy))
 
     botaoVoltar = tkinter.Button(
-    janela3, text="Voltar", command=janela3.destroy)
+        janela3, text="Voltar", command=janela3.destroy)
     botaoVoltar.place(x=10, y=7)
     botaoVoltar.configure(background='white',
                           foreground='black', font=('arial', 15, 'bold'))
@@ -195,8 +195,6 @@ def ApertarBotao():
     graficosUnidArmz.axis('equal')
 
     while True:
-
-        process_lista = []
         for proc in psutil.process_iter():
             cpu_percent = proc.cpu_percent(interval=1)
             exibir()
@@ -204,12 +202,11 @@ def ApertarBotao():
                 proc.create_time()).strftime("%d-%m-%Y %H:%M")
             info = proc.as_dict(
                 attrs=['pid', 'name', 'cpu_percent', 'create_time'])
-            info['cpu_percent'] = round(cpu_percent / psutil.cpu_count(), 1)
+            info['cpu_percent'] = round(cpu_percent, 1)
             info['create_time'] = horario
 
-            if (cpu_percent > 0):
-                process_lista.append(info)
-                dados = info['pid'], info['name'], info['cpu_percent']
+            dados = info['pid'], info['name'], info['cpu_percent']
+            if(len(dados[1]) != 0):
                 insert_proc(dados)
 
             arrayConsumoRAM.append(psutil.virtual_memory()[2])
@@ -249,8 +246,6 @@ def ApertarBotao():
             janela2.configure(background="black")
 
             janela2.update()
-        
-
 
 
 janela = tkinter.Tk()

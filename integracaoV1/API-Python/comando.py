@@ -50,7 +50,7 @@ def insert_ram(consumo):
 
     idDispositivo = select(
         "select id_dispositivo from Dispositivo, Carro where fk_carro = id_carro and id_carro =" + str(idCarro[0]) + " and tipo = 'RAM';")
- 
+
     con = criar_conexao_local()
     cursor = con.cursor()
     sql = f"INSERT INTO Medida (horario_registro, fk_dispositivo, valor) VALUES (now(), {idDispositivo[0]}, {consumo})"

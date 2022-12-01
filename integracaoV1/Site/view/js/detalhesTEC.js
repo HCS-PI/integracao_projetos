@@ -323,7 +323,7 @@ function graficoDispCpu() {
     }
   });
 }
- 
+
 function verProcesso() {
   var idCarro = sessionStorage.ID_Carro;
   var vtData = [];
@@ -441,12 +441,17 @@ function verProcesso() {
   });
 }
 
-
 function verDisco() {
   var idCarro = sessionStorage.ID_Carro;
-  vtDadosDisco = [];
-  vtTotalDisco = [];
-  fetch("/dashTecnico/dadosDisco", {
+  var vtData = [];
+  var vtHorario = [];
+  var vtDataSemFormatacao = [];
+  var vtNomeProcessos = [];
+  var vtPidProcessos = [];
+  var vtConsumoProcessos = [];
+  var contagens = [];
+
+  fetch("/dashTecnico/processos", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -457,7 +462,6 @@ function verDisco() {
   }).then(function (resposta) {
     if (resposta.ok) {
       resposta.json().then((json) => {
-        json = json.reverse();
         var i = 0;
 
         document.getElementById("grafico4").remove();
@@ -468,45 +472,85 @@ function verDisco() {
         divGrafico.appendChild(canvas);
 
         for (var index = 0; index < json.length; index++) {
-          valorUso = json[index].valor;
-          medida = json[index].unid_medida;
+          nomeProc = json[index].nome;
+          consumo = json[index].cpu_perc;
+          vtPidProcessos.push(json[index].pid);
+          vtDataSemFormatacao.push(json[index].horario_registro);
 
-          if (medida == "%") {
-            vtDadosDisco.push(valorUso);
+          //Separando e formatando data e hora
+          var limparData = vtDataSemFormatacao[i].split(".");
+          var separarHorario = limparData[0].split("T");
+
+          vtData.push(separarHorario[0]);
+          vtHorario.push(separarHorario[1]);
+
+          vtData[i] = vtData[i].split("-").reverse().join("/");
+
+          i++;
+
+          if (!vtNomeProcessos.includes(nomeProc)) {
+            vtNomeProcessos.push(nomeProc);
+            vtConsumoProcessos.push(parseFloat(consumo));
+            contagens.push(1);
           } else {
-            vtTotalDisco.push(valorUso);
+            for (contador = 0; contador < vtNomeProcessos.length; contador++) {
+              if (vtNomeProcessos[contador] == nomeProc) {
+                vtConsumoProcessos[contador] += parseFloat(consumo);
+                contagens[contador] += 1;
+              }
+            }
           }
         }
 
-        tamanho = vtTotalDisco.length;
-        const data = {
-          labels: ["Uso", "Total"],
+        const data1 = {
+          labels: [
+            vtNomeProcessos
+          ],
           datasets: [
             {
-              label: "Uso Disco",
-              backgroundColor: ["#F000E8", "#11CEF0"],
+              label: "Uso CPU(%)",
+              backgroundColor: [
+                "#00CBFF",
+                "#FF8A57",
+                "#FB5AE8",
+                "#4EFDCC",
+                "#FFFEA6",
+              ],
               borderColor: "none",
-              data: [vtDadosDisco[tamanho - 1], vtTotalDisco[tamanho - 1]],
+              data: [
+                vtConsumoProcessos
+              ],
+            },
+          ],
+        };
+
+        const data = {
+          labels: vtConsumoProcessos,
+          datasets: [
+            {
+              label: "Processos",
+              data: contagens,
+              borderColor: "#FFFEA6",
+              backgroundColor: "#FB5AE8",
+              radius: 8,
+             
             },
           ],
         };
 
         const config = {
-          type: "pie",
+          type: "bubble",
           data: data,
+          animation: 0,
           options: {
-            responsive: false,
-            animation: 1,
+            responsive: true,
             plugins: {
               legend: {
-                position: "right",
+                position: "top",
               },
               title: {
                 display: true,
-                text: "Disco",
-                font: {
-                  size: 2,
-                },
+                text: "Chart.js Bubble Chart",
               },
             },
           },
