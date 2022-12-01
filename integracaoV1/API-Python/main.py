@@ -5,12 +5,12 @@ import time
 import psutil
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from comando import insert_cpu, insert_disco, insert_proc, insert_ram, inserirConsumoCPUAws, inserirTempCPUAws, inserirConsumoRAMAws, inserirConsumoDISCOAws
+from comandoAzure import insert_cpu, insert_disco, insert_proc, insert_ram, inserirConsumoCPUAws, inserirTempCPUAws, inserirConsumoRAMAws, inserirConsumoDISCOAws
 import pandas as pd
 import datetime as dt
 from conexaoBanco import criar_conexao
 from wordcloud import WordCloud
-from conexaoBanco import criar_conexao_local
+from conexaoBanco import criar_conexao_local, criar_conexao_cloud
 
 
 # crawler
@@ -18,7 +18,7 @@ from urllib3 import PoolManager
 from json import loads
 
 
-conexao = criar_conexao_local()
+conexao = criar_conexao_cloud()
 
 arrayConsumoRAM = [0] * 10
 arrayConsumoCPU = [0] * 10
@@ -59,7 +59,8 @@ def dadosCPU():
 
             insert_cpu(str(consumoCPU), str(tempCPU))
     else:
-        insert_cpu(str(consumoCPU), str(teste))
+        print("ok")
+        #insert_cpu(str(consumoCPU), str(teste))
 
     inserirTempCPUAws(str(teste))
     inserirConsumoCPUAws(str(consumoCPU))
@@ -75,6 +76,7 @@ def dadosDisco():
 def exibir():
     dadosCPU()
     dadosDisco()
+
 
 
 def transformarEmCsv():
@@ -205,9 +207,9 @@ def ApertarBotao():
             info['cpu_percent'] = round(cpu_percent, 1)
             info['create_time'] = horario
 
-            dados = info['pid'], info['name'], info['cpu_percent']
-            if(len(dados[1]) != 0):
-                insert_proc(dados)
+            if (cpu_percent > 0):
+                dados = info['pid'], info['name'], info['cpu_percent']
+               # insert_proc(dados)
 
             arrayConsumoRAM.append(psutil.virtual_memory()[2])
             arrayConsumoRAM.remove(arrayConsumoRAM[0])
@@ -215,7 +217,7 @@ def ApertarBotao():
             arrayConsumoCPU.remove(arrayConsumoCPU[0])
 
             insert_ram(str(arrayConsumoRAM[-1]))
-            inserirConsumoRAMAws(str(psutil.virtual_memory()[2]))
+            inserirConsumoRAMAws(str(arrayConsumoRAM[-1]))
 
             figura = plt.figure(figsize=(3, 2), dpi=100)
             graficoRam = figura.add_subplot(111)
@@ -249,7 +251,7 @@ def ApertarBotao():
 
 
 janela = tkinter.Tk()
-janela.title("Teste")
+janela.title("HCS")
 janela.configure(background="black")
 
 janela.resizable(False, False)

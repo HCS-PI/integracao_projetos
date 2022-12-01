@@ -11,7 +11,7 @@ def fechar_conexao(conexao):
 
 
 def criar_conexao_local():
-    return mysql.connector.connect(host="localhost", user="root", password="matheus", database="hardware_control_system", autocommit=True)
+    return mysql.connector.connect(host="localhost", user="root", password="Vini_0507", database="hardware_control_system", autocommit=True)
 
 
 def criar_conexao_cloud():
@@ -21,8 +21,9 @@ def criar_conexao_cloud():
     username = "hcs-Grupo09"
     password = "hardwareCSg9"
     
-    string_conexao = 'Driver={'+ driver +'};'+ 'Server=' + server + ';Database=' + database +';Uid='+ username + ';Pwd='+ password + ';Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
-    conexao = pyodbc.connect(string_conexao)
+    # string_conexao = 'Driver={'+ driver +'};'+ 'Server=' + server + ';Database=' + database +';Uid='+ username + ';Pwd='+ password + ';Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
+    string_conexao2 = 'Driver={ODBC Driver 18 for SQL Server};Server=tcp:hcs-bd.database.windows.net,1433;Database=hcs-bd;Uid=hcs-Grupo09;Pwd={hardwareCSg9};Encrypt=yes;'
+    conexao = pyodbc.connect(string_conexao2)
     return conexao
 
 
