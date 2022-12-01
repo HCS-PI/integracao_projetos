@@ -20,7 +20,7 @@ from json import loads
 
 conexao = criar_conexao_cloud()
 cursor = conexao.cursor()
-query = 'insert into Medida values (CURRENT_TIMESTAMP,' + '51.0' + ', 3);'
+query = 'insert into Medida values (CURRENT_TIMESTAMP,' + '13.3' + ', 3);'
 cursor.execute(query)
 print(conexao)
 conexao.commit()

@@ -5,7 +5,7 @@ import time
 import psutil
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from comandoAzure import insert_cpu, insert_disco, insert_proc, insert_ram, inserirConsumoCPUAws, inserirTempCPUAws, inserirConsumoRAMAws, inserirConsumoDISCOAws
+from comandoAzure import *
 import pandas as pd
 import datetime as dt
 from conexaoBanco import criar_conexao
@@ -38,7 +38,7 @@ def conversor(valor):
 def dadosCPU():
     consumoCPU = psutil.cpu_percent(interval=None)
     crawler = False
-    teste = consumoCPU + 56.7
+    temperaturaSimulada = consumoCPU + 56.7
 
     if platform.system() == 'Linux':
         temps = psutil.sensors_temperatures()
@@ -47,36 +47,39 @@ def dadosCPU():
                 if entry.label == 'CPU':
                     tempCPU = entry.current
 
-        insert_cpu(str(consumoCPU), str(tempCPU))
+        insert_cpu_consumo(str(consumoCPU))
+
+        insert_cpu_temperatura(str(tempCPU))
 
     elif platform.system() != 'Linux' and crawler:
         with PoolManager() as pool:
 
-            response = pool.request('GET', 'http://localhost:8085/data.json')
+            response = pool.request('GET', 'http://localhost:8080/data.json')
             data = loads(response.data.decode('utf-8'))
             temp_value = data['Children'][0]['Children'][1]['Children'][1]['Children'][2]['Value']
             tempCPU = conversor(temp_value)
 
-            insert_cpu(str(consumoCPU), str(tempCPU))
+            insert_cpu_consumo(str(consumoCPU))
+            insert_cpu_temperatura(str(tempCPU))
     else:
         print("ok")
-        #insert_cpu(str(consumoCPU), str(teste))
+        insert_cpu_consumo(str(consumoCPU))
+        insert_cpu_temperatura(str(temperaturaSimulada))
 
-    inserirTempCPUAws(str(teste))
+    inserirTempCPUAws(str(temperaturaSimulada))
     inserirConsumoCPUAws(str(consumoCPU))
 
 
 def dadosDisco():
     armzTotalDisco = round((psutil.disk_usage('/')[0]) / (10**9), 2)
     consumoDisco = round((psutil.disk_usage('/')[3]), 2)
-    insert_disco(str(consumoDisco), str(armzTotalDisco))
+    insert_disco(str(consumoDisco))
     inserirConsumoDISCOAws(str(consumoDisco))
 
 
 def exibir():
     dadosCPU()
     dadosDisco()
-
 
 
 def transformarEmCsv():
@@ -204,12 +207,12 @@ def ApertarBotao():
                 proc.create_time()).strftime("%d-%m-%Y %H:%M")
             info = proc.as_dict(
                 attrs=['pid', 'name', 'cpu_percent', 'create_time'])
-            info['cpu_percent'] = round(cpu_percent, 1)
+            info['cpu_percent'] = round(cpu_percent / psutil.cpu_count(), 1)
             info['create_time'] = horario
 
             if (cpu_percent > 0):
                 dados = info['pid'], info['name'], info['cpu_percent']
-               # insert_proc(dados)
+                insert_proc(dados)
 
             arrayConsumoRAM.append(psutil.virtual_memory()[2])
             arrayConsumoRAM.remove(arrayConsumoRAM[0])
