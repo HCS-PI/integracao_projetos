@@ -1,7 +1,7 @@
 import tkinter
 import platform
 from random import *
-import time
+from time import *
 import psutil
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -100,14 +100,14 @@ def transformarEmCsv():
 
 def ApertarBotao3():
     cursor = conexao.cursor()
-    sql = 'SELECT valor FROM Medida, Dispositivo where tipo = "RAM" AND fk_dispositivo = id_dispositivo  AND fk_servidor_aws = 1 order by id_medida desc limit 100;'
+    sql = "SELECT TOP 100 valor FROM Medida, Dispositivo where tipo = 'RAM' AND fk_dispositivo = id_dispositivo  AND fk_servidor_aws = 1 order by id_medida desc;"
     cursor.execute(sql)
 
     resultadoRam = cursor.fetchall()
     cursor.close()
 
     cursor = conexao.cursor()
-    sql = 'SELECT valor FROM Medida, Dispositivo where tipo = "CPU" AND unid_medida = "%"  AND fk_dispositivo = id_dispositivo AND fk_servidor_aws = 1 order by id_medida desc limit 100;'
+    sql = "SELECT valor FROM Medida, Dispositivo where tipo = 'CPU' AND unid_medida = '%'  AND fk_dispositivo = id_dispositivo AND fk_servidor_aws = 1 order by id_medida desc;"
     cursor.execute(sql)
 
     resultadoCpu = cursor.fetchall()
