@@ -47,7 +47,7 @@ def dadosCPU():
                 if entry.label == 'CPU':
                     tempCPU = entry.current
 
-        insert_cpu_consumo(str(consumoCPU))
+                insert_cpu_consumo(str(consumoCPU))
 
         insert_cpu_temperatura(str(tempCPU))
 
