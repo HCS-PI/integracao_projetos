@@ -47,9 +47,9 @@ def dadosCPU():
                 if entry.label == 'CPU':
                     tempCPU = entry.current
 
-                insert_cpu_consumo(str(consumoCPU))
 
-        insert_cpu_temperatura(str(tempCPU))
+                insert_cpu_temperatura(str(tempCPU))
+        insert_cpu_consumo(str(consumoCPU))
 
     elif platform.system() != 'Linux' and crawler:
         with PoolManager() as pool:
