@@ -62,7 +62,7 @@ def dadosCPU():
             insert_cpu_consumo(str(consumoCPU))
             insert_cpu_temperatura(str(tempCPU))
     else:
-        print("ok")
+      
         insert_cpu_consumo(str(consumoCPU))
         insert_cpu_temperatura(str(temperaturaSimulada))
 
@@ -80,7 +80,7 @@ def dadosDisco():
 def exibir():
     dadosCPU()
     dadosDisco()
-
+    
 
 def transformarEmCsv():
     cursor = conexao.cursor()

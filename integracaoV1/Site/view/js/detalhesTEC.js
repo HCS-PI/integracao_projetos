@@ -4,7 +4,7 @@ setInterval(() => {
 }, 1000);
 setInterval(() => {
   graficoPie();
-}, 5000);
+}, 15000);
 
 function verCarro() {
   var idCarro = sessionStorage.ID_Carro;
@@ -59,33 +59,33 @@ function gerarDados() {
           if (tipoDisp == "RAM") {
             valRam.innerHTML = `${valor}%`;
             vtRAM.push(valor);
-
+            
             if (valor > 0 && valor <= 60) {
-              ram.style = "background: #00FAAC;";
+              ram.style = "border: 3px solid #00FAAC;";
             } else if (valor > 60 && valor < 80) {
-              ram.style = "background: #FFFF7C;";
+              ram.style = "border: 3px solid #F6FF00;";
             } else {
-              ram.style = "background: #FF3559;";
+              ram.style = "border: 3px solid #FF002F;";
             }
           } else if (tipoDisp == "CPU") {
             if (tip == "°C") {
               valTemp.innerHTML = `${valor}°C`;
               if (valor > 0 && valor <= 60) {
-                temp.style = "background: #00FAAC;";
+                temp.style = "border: 3px solid #00FAAC;";
               } else if (valor > 60 && valor < 80) {
-                temp.style = "background: #FFFF7C;";
+                temp.style = "border: 3px solid #F6FF00;";
               } else {
-                temp.style = "background: #FF3559;";
+                temp.style = "border: 3px solid #FF3559;";
               }
             } else if (tip == "%") {
               valCPU.innerHTML = `${valor}%`;
               vtCPU.push(valor);
               if (valor > 0 && valor <= 60) {
-                cpu.style = "background: #00FAAC;";
+                cpu.style = "border: 3px solid #00FAAC;";
               } else if (valor > 60 && valor < 80) {
-                cpu.style = "background: #FFFF7C;";
+                cpu.style = "border: 3px solid #F6FF00;";
               } else {
-                cpu.style = "background: #FF3559;";
+                cpu.style = "border: 3px solid #FF3559;";
               }
             }
           }
@@ -266,8 +266,8 @@ function graficoDispCpu() {
               type: "line",
               label: "Uso Cpu(%)",
               lineTension: 0.3,
-              backgroundColor: "rgba(92, 925, 183, 1.5)",
-              borderColor: "rgba(92, 925, 183, 1.5)",
+              backgroundColor: "#00FA8575",
+              borderColor: "#07FF72",
               pointStyle: "rectRounded",
               pointRadius: 8,
               pointHoverRadius: 10,
@@ -282,8 +282,8 @@ function graficoDispCpu() {
             {
               type: "bar",
               label: "Temperatura(°C)",
-              backgroundColor: "rgba(250, 5, 35, 0.94)",
-              borderColor: "rgba(250, 5, 35, 0.94)",
+              backgroundColor: "#FA05226F",
+              borderColor: "#FF001E",
               borderWidth: 1,
               borderRadius: 10,
               borderSkipped: false,
@@ -332,6 +332,7 @@ function verProcesso() {
   var vtNomeProcessos = [];
   var vtPidProcessos = [];
   var vtConsumoProcessos = [];
+  var contagens = [];
 
   fetch("/dashTecnico/processos", {
     method: "POST",
@@ -353,6 +354,13 @@ function verProcesso() {
         canvas.className = "graficoPizza";
         divGrafico.appendChild(canvas);
 
+        document.getElementById("grafico4").remove();
+        var divGrafico = document.getElementById("graficoPieCpu");
+        var canvas2 = document.createElement("canvas");
+        canvas2.id = "grafico4";
+        canvas2.className = "graficoPizzaCPU";
+        divGrafico.appendChild(canvas2);
+
         contador = 0;
 
         for (var index = 0; index < json.length; index++) {
@@ -371,20 +379,25 @@ function verProcesso() {
           vtData[i] = vtData[i].split("-").reverse().join("/");
 
           i++;
-
+          consumo = consumo.toFixed(1);
           if (!vtNomeProcessos.includes(nomeProc)) {
             vtNomeProcessos.push(nomeProc);
             vtConsumoProcessos.push(parseFloat(consumo));
+            contagens.push(1);
           } else {
             for (contador = 0; contador < vtNomeProcessos.length; contador++) {
               if (vtNomeProcessos[contador] == nomeProc) {
                 vtConsumoProcessos[contador] += parseFloat(consumo);
+                vtConsumoProcessos[contador] = parseFloat(  
+                  vtConsumoProcessos[contador].toFixed(1)
+                );
+                contagens[contador] += 1;
+                contagens[contador] = parseInt(contagens[contador]);
               }
             }
           }
         }
-
-        const data = {
+        const data1 = {
           labels: [
             vtNomeProcessos[0],
             vtNomeProcessos[1],
@@ -402,7 +415,8 @@ function verProcesso() {
                 "#4EFDCC",
                 "#FFFEA6",
               ],
-              borderColor: "none",
+              borderColor: "#fff",
+              border: 0,
               data: [
                 vtConsumoProcessos[0],
                 vtConsumoProcessos[1],
@@ -414,15 +428,20 @@ function verProcesso() {
           ],
         };
 
-        const config = {
-          type: "doughnut",
-          data: data,
+        const config1 = {
+          type: "pie",
+          data: data1,
           options: {
             responsive: false,
             animation: 0,
             plugins: {
               legend: {
                 position: "right",
+                labels:{
+                  font: {
+                    size: 12 ,
+                  },
+                },
               },
               title: {
                 display: true,
@@ -431,98 +450,15 @@ function verProcesso() {
                   size: 20,
                 },
               },
+
             },
           },
         };
 
-        let myChartCpu = new Chart(document.getElementById("grafico3"), config);
-      });
-    }
-  });
-}
-
-function verDisco() {
-  var idCarro = sessionStorage.ID_Carro;
-  var vtData = [];
-  var vtHorario = [];
-  var vtDataSemFormatacao = [];
-  var vtNomeProcessos = [];
-  var vtPidProcessos = [];
-  var vtConsumoProcessos = [];
-  var contagens = [];
-
-  fetch("/dashTecnico/processos", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      idCarro: idCarro,
-    }),
-  }).then(function (resposta) {
-    if (resposta.ok) {
-      resposta.json().then((json) => {
-        var i = 0;
-
-        document.getElementById("grafico4").remove();
-        var divGrafico = document.getElementById("graficoPieCpu");
-        var canvas = document.createElement("canvas");
-        canvas.id = "grafico4";
-        canvas.className = "graficoPizzaCPU";
-        divGrafico.appendChild(canvas);
-
-        for (var index = 0; index < json.length; index++) {
-          nomeProc = json[index].nome;
-          consumo = json[index].cpu_perc;
-          vtPidProcessos.push(json[index].pid);
-          vtDataSemFormatacao.push(json[index].horario_registro);
-
-          //Separando e formatando data e hora
-          var limparData = vtDataSemFormatacao[i].split(".");
-          var separarHorario = limparData[0].split("T");
-
-          vtData.push(separarHorario[0]);
-          vtHorario.push(separarHorario[1]);
-
-          vtData[i] = vtData[i].split("-").reverse().join("/");
-
-          i++;
-
-          if (!vtNomeProcessos.includes(nomeProc)) {
-            vtNomeProcessos.push(nomeProc);
-            vtConsumoProcessos.push(parseFloat(consumo));
-            contagens.push(1);
-          } else {
-            for (contador = 0; contador < vtNomeProcessos.length; contador++) {
-              if (vtNomeProcessos[contador] == nomeProc) {
-                vtConsumoProcessos[contador] += parseFloat(consumo);
-                contagens[contador] += 1;
-              }
-            }
-          }
-        }
-
-        const data1 = {
-          labels: [
-            vtNomeProcessos
-          ],
-          datasets: [
-            {
-              label: "Uso CPU(%)",
-              backgroundColor: [
-                "#00CBFF",
-                "#FF8A57",
-                "#FB5AE8",
-                "#4EFDCC",
-                "#FFFEA6",
-              ],
-              borderColor: "none",
-              data: [
-                vtConsumoProcessos
-              ],
-            },
-          ],
-        };
+        let graficoPizza = new Chart(
+          document.getElementById("grafico3"),
+          config1
+        );
 
         const data = {
           labels: vtConsumoProcessos,
@@ -530,10 +466,8 @@ function verDisco() {
             {
               label: "Processos",
               data: contagens,
-              borderColor: "#FFFEA6",
-              backgroundColor: "#FB5AE8",
+              backgroundColor: "#F36C32BA",
               radius: 8,
-             
             },
           ],
         };
@@ -550,7 +484,10 @@ function verDisco() {
               },
               title: {
                 display: true,
-                text: "Chart.js Bubble Chart",
+                text: "Frequencia de Processos",
+                font: {
+                  size: 20,
+                },
               },
             },
           },
@@ -568,5 +505,4 @@ function graficosLine() {
 }
 function graficoPie() {
   verProcesso();
-  verDisco();
 }

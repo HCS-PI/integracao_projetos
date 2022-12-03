@@ -3,6 +3,7 @@ body {
     font-family: 'Tajawal', sans-serif;
     background-color: yellow;
     background-image: url(../assets/img/loginBackground2.jpg);
+    background: #a3a3a386;
 }
 
 img {
@@ -21,7 +22,7 @@ img {
     background: #6c6b6b86;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 100vh;
     display: none;
 }
 
@@ -167,13 +168,20 @@ img {
 
 .graficoPieProcessos,
 .graficoPieCpu {
+
+    height: 100%;
     width: 90%;
     display: flex;
     justify-content: center;
     align-content: center;
     align-items: center;
     align-content: center;
+    
 
+}
+
+.graficoPieProcessos{
+    padding: 6%;
 }
 
 .graficoPizza {
@@ -181,7 +189,7 @@ img {
 }
 
 .graficoPizzaCPU {
-    width: 15rem;
+    width: 20rem;
 }
 
 @media (min-width: 520px) {
@@ -300,7 +308,8 @@ img {
         align-items: center;
         background: rgb(255, 255, 255);
         width: 43%;
-        height: 60%;
+        
+        height: 80%;
         border-radius: 20px;
         box-shadow: 0px 0px 20px 0px #2F3B47;
 
@@ -334,6 +343,8 @@ img {
 
     .graficoPieProcessos,
     .graficoPieCpu {
+
+        height: 100%;
         width: 100%;
         display: flex;
         justify-content: center;
@@ -369,7 +380,7 @@ img {
     .corpo {
         display: flex;
         flex-direction: row;
-        height: 90vh;
+        height: 102vh;
         background: #a3a3a386;
     }
 
@@ -449,7 +460,7 @@ img {
 
     .graficos {
 
-        height: 90vh;
+        height: 100vh;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -473,7 +484,7 @@ img {
         align-items: center;
         background: rgb(255, 255, 255);
         width: 43%;
-        height: 70%;
+        height: 80%;
         border-radius: 20px;
         box-shadow: 0px 0px 20px 0px #2F3B47;
 
@@ -507,14 +518,16 @@ img {
 
     .graficoPieProcessos,
     .graficoPieCpu {
+        height: 100%;
         width: 100%;
         display: flex;
         justify-content: center;
         align-content: center;
         align-items: center;
         align-content: center;
-
+        padding:  1%;
     }
+
 
     .graficoPizza {
         width: 19rem;
