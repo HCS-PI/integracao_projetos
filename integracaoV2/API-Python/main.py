@@ -200,57 +200,60 @@ def ApertarBotao():
     graficosUnidArmz.axis('equal')
 
     while True:
-        for proc in psutil.process_iter():
-            cpu_percent = proc.cpu_percent(interval=1)
-            exibir()
-            horario = dt.datetime.fromtimestamp(
-                proc.create_time()).strftime("%d-%m-%Y %H:%M")
-            info = proc.as_dict(
-                attrs=['pid', 'name', 'cpu_percent', 'create_time'])
-            info['cpu_percent'] = round(cpu_percent / psutil.cpu_count(), 1)
-            info['create_time'] = horario
+        if janela2.destroyed:
+            break
+        else:
+            for proc in psutil.process_iter():
+                cpu_percent = proc.cpu_percent(interval=1)
+                exibir()
+                horario = dt.datetime.fromtimestamp(
+                    proc.create_time()).strftime("%d-%m-%Y %H:%M")
+                info = proc.as_dict(
+                    attrs=['pid', 'name', 'cpu_percent', 'create_time'])
+                info['cpu_percent'] = round(cpu_percent / psutil.cpu_count(), 1)
+                info['create_time'] = horario
 
-            if (cpu_percent > 0):
-                dados = info['pid'], info['name'], info['cpu_percent']
-                insert_proc(dados)
+                if (cpu_percent > 0):
+                    dados = info['pid'], info['name'], info['cpu_percent']
+                    insert_proc(dados)
 
-            arrayConsumoRAM.append(psutil.virtual_memory()[2])
-            arrayConsumoRAM.remove(arrayConsumoRAM[0])
-            arrayConsumoCPU.append(psutil.cpu_percent(interval=None))
-            arrayConsumoCPU.remove(arrayConsumoCPU[0])
+                arrayConsumoRAM.append(psutil.virtual_memory()[2])
+                arrayConsumoRAM.remove(arrayConsumoRAM[0])
+                arrayConsumoCPU.append(psutil.cpu_percent(interval=None))
+                arrayConsumoCPU.remove(arrayConsumoCPU[0])
 
-            insert_ram(str(arrayConsumoRAM[-1]))
-            inserirConsumoRAMAws(str(arrayConsumoRAM[-1]))
+                insert_ram(str(arrayConsumoRAM[-1]))
+                inserirConsumoRAMAws(str(arrayConsumoRAM[-1]))
 
-            figura = plt.figure(figsize=(3, 2), dpi=100)
-            graficoRam = figura.add_subplot(111)
-            canva2 = FigureCanvasTkAgg(figura, janela2)
-            canva2.get_tk_widget().place(x=0, y=240)
+                figura = plt.figure(figsize=(3, 2), dpi=100)
+                graficoRam = figura.add_subplot(111)
+                canva2 = FigureCanvasTkAgg(figura, janela2)
+                canva2.get_tk_widget().place(x=0, y=240)
 
-            figura = plt.figure(figsize=(3, 2), dpi=100)
-            graficoCPU = figura.add_subplot(111)
-            canva = FigureCanvasTkAgg(figura, janela2)
-            canva.get_tk_widget().place(x=0, y=30)
+                figura = plt.figure(figsize=(3, 2), dpi=100)
+                graficoCPU = figura.add_subplot(111)
+                canva = FigureCanvasTkAgg(figura, janela2)
+                canva.get_tk_widget().place(x=0, y=30)
 
-            graficoCPU.plot(arrayConsumoCPU, color='blue',
-                            label='Consumo de RAM')
-            graficoCPU.scatter(len(arrayConsumoCPU) - 1,
-                               arrayConsumoCPU[-1], color='blue')
-            graficoCPU.title.set_text(
-                f'Consumo de CPU - {arrayConsumoCPU[-1]}%')
-            graficoCPU.set_ylim(0, 100)
+                graficoCPU.plot(arrayConsumoCPU, color='blue',
+                                label='Consumo de RAM')
+                graficoCPU.scatter(len(arrayConsumoCPU) - 1,
+                                arrayConsumoCPU[-1], color='blue')
+                graficoCPU.title.set_text(
+                    f'Consumo de CPU - {arrayConsumoCPU[-1]}%')
+                graficoCPU.set_ylim(0, 100)
 
-            graficoRam.plot(arrayConsumoRAM, color='red',
-                            label='Consumo de RAM')
-            graficoRam.scatter(len(arrayConsumoRAM) - 1,
-                               arrayConsumoRAM[-1], color='red')
-            graficoRam.title.set_text(
-                f'Consumo de RAM - {arrayConsumoRAM[-1]}%')
-            graficoRam.set_ylim(0, 100)
+                graficoRam.plot(arrayConsumoRAM, color='red',
+                                label='Consumo de RAM')
+                graficoRam.scatter(len(arrayConsumoRAM) - 1,
+                                arrayConsumoRAM[-1], color='red')
+                graficoRam.title.set_text(
+                    f'Consumo de RAM - {arrayConsumoRAM[-1]}%')
+                graficoRam.set_ylim(0, 100)
 
-            janela2.configure(background="black")
+                janela2.configure(background="black")
 
-            janela2.update()
+                janela2.update()
 
 
 janela = tkinter.Tk()
