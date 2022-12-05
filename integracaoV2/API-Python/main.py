@@ -1,3 +1,4 @@
+from distutils.cmd import Command
 import tkinter
 import platform
 from random import *
@@ -19,6 +20,7 @@ from json import loads
 
 
 conexao = criar_conexao_cloud()
+
 
 arrayConsumoRAM = [0] * 10
 arrayConsumoCPU = [0] * 10
@@ -134,7 +136,8 @@ def ApertarBotao3():
     janela3.geometry("600x500+%d+%d" % (posx, posy))
 
     botaoVoltar = tkinter.Button(
-        janela3, text="Voltar", command=janela3.destroy)
+        janela3, text="Voltar", command= lambda:[janela3.destroy(), plt.close()])
+
     botaoVoltar.place(x=10, y=7)
     botaoVoltar.configure(background='white',
                           foreground='black', font=('arial', 15, 'bold'))
@@ -155,7 +158,7 @@ def ApertarBotao3():
 
 
 def ApertarBotao2():
-
+    plt.close()
     transformarEmCsv()
 
     leitura = pd.read_csv("DadosColetados"+str(dt.date.today())+".csv")
@@ -168,7 +171,6 @@ def ApertarBotao2():
     plt.imshow(wc)
     plt.axis("off")
     plt.show()
-
 
 def ApertarBotao():
     janela2 = tkinter.Tk()
@@ -199,10 +201,8 @@ def ApertarBotao():
         labels, loc="best", bbox_to_anchor=((0.6, -0.3, 0.5, 0.5)))
     graficosUnidArmz.axis('equal')
 
+ 
     while True:
-        if janela2.destroyed:
-            break
-        else:
             for proc in psutil.process_iter():
                 cpu_percent = proc.cpu_percent(interval=1)
                 exibir()
@@ -256,6 +256,7 @@ def ApertarBotao():
                 janela2.update()
 
 
+ 
 janela = tkinter.Tk()
 janela.title("HCS")
 janela.configure(background="black")
