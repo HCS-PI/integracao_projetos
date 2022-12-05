@@ -230,7 +230,7 @@ SELECT TOP 5 id_empresa as 'CodEmpresa',
 		unid_medida AS 'UnidadeMedida',
 		round(avg(valor),1) AS 'MediaConsumo' FROM Empresa, Carro, Dispositivo, Medida
 WHERE id_empresa = fk_empresa AND fk_carro = id_carro 
-AND fk_dispositivo = id_dispositivo AND tipo = 'CPU'
+AND fk_dispositivo = id_dispositivo AND tipo = 'CPU' AND unid_medida = '%'
 group by Carro.modelo, id_empresa,tipo,unid_medida;
 
 
@@ -242,7 +242,7 @@ SELECT TOP 5 id_empresa as 'CodEmpresa',
 		unid_medida as 'Unidade de Medida',
 		round(avg(valor),1) as 'MediaConsumo'
 		FROM Empresa, Carro, Dispositivo, Medida
-		WHERE fk_empresa = id_empresa AND fk_carro = id_carro AND fk_dispositivo = id_dispositivo AND tipo = 'RAM' 
+		WHERE fk_empresa = id_empresa AND fk_carro = id_carro AND fk_dispositivo = id_dispositivo AND tipo = 'RAM' AND unid_medida = '%'
 		group by Carro.modelo,id_empresa,tipo,unid_medida;
 
 GO
