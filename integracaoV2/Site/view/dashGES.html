@@ -42,13 +42,21 @@
                     <h2>Média de Consumo de CPU por Modelo</h2>
                 </div>
                 <div id="div_modelos_carros_CPU" class="modelos_carros_input_modelos">
+                    <div class="teste">
+                        <h3>Modelo: <span> Model X  </span></h3>
+                        <h3>Consumo: <span> 61,4 % </span></h3>
+                    </div>
+                    <div class="teste">
+                        <h3>Modelo: <span> Model S  </span></h3>
+                        <h3>Consumo: <span> 5,6 % </span></h3>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="boxInfoRAMCarros">
         <div class="informacoesRAMCarros">
-            <div class="div_graficoRAM" id="div_graficoRAM">
+            <div class="div_graficoTempCPU" id="div_graficoRAM">
                 <canvas id="graf_mediaRAM"></canvas>
             </div>
             <div class="div_ModelosCarros">
@@ -60,7 +68,22 @@
             </div>
         </div>
     </div>
-  <!-- <div class="graficos">
+    <div class="boxInfoTempCPUCarros">
+        <div class="informacoesTempCPUCarros">
+            <div class="div_graficoTempCPU" id="div_graficoTempCPU">
+                <canvas id="graf_TempCPU"></canvas>
+            </div>
+            <div class="div_ModelosCarros">
+                <div>
+                    <h2>Consumo de CPU e Temperatura Recentes</h2>
+                    <h3>Model X</h3>
+                </div>
+                <div  id = "div_modelos_carros_TempCPU" class="modelos_carros_input_modelos">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="graficos">
         <div class="grafico1">
             <div class="graficoBarraCPU" id="graficoBarraCPU">
                 <canvas id="grafico1"></canvas>
@@ -71,9 +94,13 @@
             <div class="graficoBarraRAM" id="graficoBarraRAM"><canvas id="grafico2"></canvas></div>
         </div>
 
-        <div class="grafico3">
+        <!--<div class="grafico3">
             <div class="graficoPizzaDisco"><canvas id="grafico3"></canvas></div>
         </div> -->
+
+        <div class="grafico4">
+            <div class="graficoLinhaTemperaturaCpu" id="graficoLinhaTemperaturaCpu"><canvas id="grafico4"></canvas></div>
+        </div>
 
     </div>
 
