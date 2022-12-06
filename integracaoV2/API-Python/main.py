@@ -40,7 +40,7 @@ def conversor(valor):
 def dadosCPU():
     consumoCPU = psutil.cpu_percent(interval=None)
     crawler = False
-    temperaturaSimulada = consumoCPU + 56.7
+    temperaturaSimulada = consumoCPU * 1.3
 
     if platform.system() == 'Linux':
         temps = psutil.sensors_temperatures()
@@ -50,8 +50,10 @@ def dadosCPU():
                     tempCPU = entry.current
 
 
-                insert_cpu_temperatura(str(tempCPU))
+        insert_cpu_temperatura(str(temperaturaSimulada))
         insert_cpu_consumo(str(consumoCPU))
+        inserirTempCPUAws(str(temperaturaSimulada))
+        inserirConsumoCPUAws(str(consumoCPU))
 
     elif platform.system() != 'Linux' and crawler:
         with PoolManager() as pool:
@@ -68,8 +70,8 @@ def dadosCPU():
         insert_cpu_consumo(str(consumoCPU))
         insert_cpu_temperatura(str(temperaturaSimulada))
 
-    inserirTempCPUAws(str(temperaturaSimulada))
-    inserirConsumoCPUAws(str(consumoCPU))
+        inserirTempCPUAws(str(temperaturaSimulada))
+        inserirConsumoCPUAws(str(consumoCPU))
 
 
 def dadosDisco():
@@ -111,7 +113,7 @@ def ApertarBotao3():
     cursor.close()
 
     cursor = conexao.cursor()
-    sql = "SELECT valor FROM Medida, Dispositivo where tipo = 'CPU' AND unid_medida = '%'  AND fk_dispositivo = id_dispositivo AND fk_servidor_aws = 1 order by id_medida desc;"
+    sql = "SELECT TOP 100 valor FROM Medida, Dispositivo where tipo = 'CPU' AND unid_medida = '%'  AND fk_dispositivo = id_dispositivo AND fk_servidor_aws = 1 order by id_medida desc;"
     cursor.execute(sql)
 
     resultadoCpu = cursor.fetchall()
