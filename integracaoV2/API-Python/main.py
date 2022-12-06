@@ -93,12 +93,14 @@ def transformarEmCsv():
     nomeProcesso = []
 
     for nome in resultado:
-        nomeProcesso.append(nome)
-
-    dic = {"Nome": nomeProcesso}
+        nomeProcesso.append(nome[0].replace(".exe", ""))
+        
+    
+        
+    dic = {" ": nomeProcesso}
     df = pd.DataFrame(dic)
-    df.to_csv("DadosColetados"+str(dt.date.today())+".csv")
-
+    print(df)
+    df = df.to_csv("DadosColetados"+str(dt.date.today())+".csv")
 
 def ApertarBotao3():
     cursor = conexao.cursor()
@@ -162,11 +164,13 @@ def ApertarBotao2():
     transformarEmCsv()
 
     leitura = pd.read_csv("DadosColetados"+str(dt.date.today())+".csv")
-    leitura = leitura.drop("Unnamed: 0", axis=1)
+    leitura.drop('Unnamed: 0', axis=1, inplace=True)
+
+    
 
     wc = WordCloud(background_color="white",
                    max_words=1000, width=800, height=400)
-    print(str(leitura))
+    #print(str(leitura))
     wc.generate(str(leitura))
     plt.imshow(wc)
     plt.axis("off")
